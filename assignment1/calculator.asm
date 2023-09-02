@@ -45,16 +45,16 @@ _quit:
     mov rdi, 0
     syscall
 
-_newline:
+%macro newline 0
     mov rax, 1
     mov rdi, 1
     mov rsi, newline
     mov rdx, 1
     syscall
-    ret
+%endmacro
 
 _printAverage:
-    call _newline
+    newline
 
     mov rax, 1
     mov rdi, 1
