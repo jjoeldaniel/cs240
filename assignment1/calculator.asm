@@ -18,21 +18,21 @@ section .bss
     average_speed_res resb 16
     total_time_res resb 16
 
+    first_travel_time resb 16
+    second_travel_time resb 16
+
 section .text
     global _start
 _start:
 
     call _promptSpeed
     call _getSpeed
-    ; call _printSpeed
 
     call _promptMiles
     call _getMiles
-    ; call _printMiles
 
     call _promptFinalSpeed
     call _getFinalSpeed
-    ; call _printFinalSpeed
 
     ; TODO: calculate average
     call _printAverage
@@ -98,14 +98,6 @@ _getSpeed:
     syscall
     ret
 
-_printSpeed:
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, initial_speed_res
-    mov rdx, 16
-    syscall
-    ret
-
 _promptMiles:
     mov rax, 1
     mov rdi, 1
@@ -122,14 +114,6 @@ _getMiles:
     syscall
     ret
 
-_printMiles:
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, miles_res
-    mov rdx, 16
-    syscall
-    ret
-
 _promptFinalSpeed:
     mov rax, 1
     mov rdi, 0
@@ -141,14 +125,6 @@ _promptFinalSpeed:
 _getFinalSpeed:
     mov rax, 0
     mov rdi, 0
-    mov rsi, final_speed_res
-    mov rdx, 16
-    syscall
-    ret
-
-_printFinalSpeed:
-    mov rax, 1
-    mov rdi, 1
     mov rsi, final_speed_res
     mov rdx, 16
     syscall
