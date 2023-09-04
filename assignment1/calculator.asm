@@ -9,6 +9,7 @@ section .data
 
     newline db "", 10
     test_data db "1", 10
+    digit db 0, 10
 
 section .bss
 
@@ -23,8 +24,27 @@ section .bss
 
 section .text
     global _start
-_start:
 
+%macro printDigit 1
+    mov rax, %1
+    call _printRAXDigit
+%endmacro
+
+%macro quit 0
+    mov rax, 60
+    mov rdi, 0
+    syscall
+%endmacro
+
+%macro newline 0
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, newline
+    mov rdx, 1
+    syscall
+%endmacro
+
+_start:
     call _promptSpeed
     call _getSpeed
 
@@ -37,21 +57,18 @@ _start:
     ; TODO: calculate average
     call _printAverage
 
+    printDigit 3
+    quit
 
-    call _quit
-
-_quit:
-    mov rax, 60
-    mov rdi, 0
-    syscall
-
-%macro newline 0
+_printRAXDigit:
+    add rax, 48
+    mov [digit], al
     mov rax, 1
     mov rdi, 1
-    mov rsi, newline
-    mov rdx, 1
+    mov rsi, digit
+    mov rdx, 2
     syscall
-%endmacro
+    ret
 
 _printAverage:
     newline
