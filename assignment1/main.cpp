@@ -1,3 +1,8 @@
+// Joel Daniel Rico
+// CPSC 240
+// Section 01
+// Program Name: CPSC 240 Assignment 1 - Compute Trip
+
 #include <iostream>
 
 extern "C" long long calculate();
