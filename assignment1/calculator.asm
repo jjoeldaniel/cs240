@@ -12,27 +12,33 @@ section .data
     digit db 0, 10
 
 section .bss
-
-    initial_speed_res resb 16
-    miles_res resb 16
-    final_speed_res resb 16
-    average_speed_res resb 16
-    total_time_res resb 16
-
-    first_travel_time resb 16
-    second_travel_time resb 16
+    initial_speed_input resb 16
+    miles_input resb 16
+    final_speed_input resb 16
 
 section .text
     global _start
 
-%macro printDigit 1
-    mov rax, %1
-    call _printRAXDigit
-%endmacro
-
 %macro quit 0
     mov rax, 60
     mov rdi, 0
+    syscall
+%endmacro
+
+; Function to read integer input
+%macro scanf 1
+    mov rax, 0           ; syscall number for sys_read
+    mov rdi, 0           ; file descriptor 0 (stdin)
+    mov rsi, 1          ; buffer address
+    mov rdx, %1          ; number of bytes to read
+    syscall
+%endmacro
+
+%macro printf 2
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, %1
+    mov rdx, %2
     syscall
 %endmacro
 
@@ -45,104 +51,17 @@ section .text
 %endmacro
 
 _start:
-    call _promptSpeed
-    call _getSpeed
 
-    call _promptMiles
-    call _getMiles
+    ; prompt for initial speed
+    printf initial_speed, 66
+    scanf initial_speed_input
 
-    call _promptFinalSpeed
-    call _getFinalSpeed
+    ; prompt for miles
+    printf miles, 57
+    scanf miles_input
 
-    ; TODO: calculate average
-    call _printAverage
-
-    printDigit 3
+    ; prompt for final speed
+    printf final_speed, 68
+    scanf final_speed_input
+    
     quit
-
-_printRAXDigit:
-    add rax, 48
-    mov [digit], al
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, digit
-    mov rdx, 2
-    syscall
-    ret
-
-_printAverage:
-    newline
-
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, average_speed
-    mov rdx, 27
-    syscall
-
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, test_data
-    mov rdx, 2
-    syscall
-
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, total_time
-    mov rdx, 24
-    syscall
-
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, test_data
-    mov rdx, 2
-    syscall
-
-    ret
-
-_promptSpeed:
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, initial_speed
-    mov rdx, 67
-    syscall
-    ret
-
-_getSpeed:
-    mov rax, 0
-    mov rdi, 0
-    mov rsi, initial_speed_res
-    mov rdx, 16
-    syscall
-    ret
-
-_promptMiles:
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, miles
-    mov rdx, 58
-    syscall
-    ret
-
-_getMiles:
-    mov rax, 0
-    mov rdi, 0
-    mov rsi, miles_res
-    mov rdx, 16
-    syscall
-    ret
-
-_promptFinalSpeed:
-    mov rax, 1
-    mov rdi, 0
-    mov rsi, final_speed
-    mov rdx, 69
-    syscall
-    ret
-
-_getFinalSpeed:
-    mov rax, 0
-    mov rdi, 0
-    mov rsi, final_speed_res
-    mov rdx, 16
-    syscall
-    ret
