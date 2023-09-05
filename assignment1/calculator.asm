@@ -17,7 +17,7 @@ section .bss
     final_speed_input resb 16
 
 section .text
-    global _start
+    global calculate
 
 %macro quit 0
     mov rax, 60
@@ -58,5 +58,6 @@ calculate:
     ; prompt for final speed
     printf final_speed, 68
     scanf final_speed_input
+    newline
     
-    quit
+    ret

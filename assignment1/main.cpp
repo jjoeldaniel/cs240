@@ -12,6 +12,7 @@ int main()
 
     // TODO : take input from calculator
     int num = 0;
+    calculate();
     std::cout << "The main module recieved this number " << num << " and will keep it for a while." << std::endl;
     std::cout << "A zero will be sent to your operating sytem.\nGood-bye. Have a safe trip." << std::endl;
 
