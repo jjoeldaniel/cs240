@@ -10,8 +10,8 @@ section .data
     float_format db "%lf", 0
     newline db "", 10
 
-    text_average_speed db "Your average speed will be %lf", 10
-    text_total_time db "Your total time will be %lf", 10
+    text_average_speed db 10, "Your average speed will be %lf", 10
+    text_total_time db "Your total time will be %lf hours", 10
 
     distance dq 253.5
 
@@ -57,14 +57,6 @@ section .text
     pushf
 %endmacro
 
-%macro newline 0
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, newline
-    mov rdx, 1
-    syscall
-%endmacro
-
 %macro restore 0
     popf
     pop r15
@@ -107,22 +99,18 @@ calculate:
 
     ; total time = ( miles / initial speed ) + ( (distance - miles) / final speed )
 
-    movsd xmm4, xmm3
+    movsd xmm4, xmm1
     divsd xmm4, xmm0
 
-    ; (distance - miles) / final speed )
     movsd xmm5, xmm3
     subsd xmm5, xmm1
     divsd xmm5, xmm2
 
-    ; complete total time
     addsd xmm4, xmm5
 
     ; average speed = distance / total time
     movsd xmm6, xmm3
     divsd xmm6, xmm4
-
-    newline
 
     ; print average speed
     movsd xmm0, xmm6
