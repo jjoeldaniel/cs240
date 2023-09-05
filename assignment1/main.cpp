@@ -1,20 +1,16 @@
 #include <iostream>
 
-extern "C"
-{
-    double calculate();
-}
+extern "C" double calculate();
 
 int main()
 {
-    std::cout << "Welcome to Trip Advisor by Richard Nguyen.\nWe help you plan your trip.\n"
-              << std::endl;
+    std::cout << "Welcome to Trip Advisor by Joel Daniel Rico.\n"
+              << "We help you plan your trip.\n\n";
 
-    // TODO : take input from calculator
-    int num = 0;
-    calculate();
-    std::cout << "The main module recieved this number " << num << " and will keep it for a while." << std::endl;
-    std::cout << "A zero will be sent to your operating sytem.\nGood-bye. Have a safe trip." << std::endl;
+    double number = calculate();
 
+    std::cout << "\nThe main module received this number " << number << " and will keep it for a while.\n"
+              << "A zero will be sent to your operating system.\n"
+              << "Good-bye. Have a great trip.\n";
     return 0;
 }
