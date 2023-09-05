@@ -13,6 +13,10 @@ section .data
     text_average_speed db 10, "Your average speed will be %lf", 10
     text_total_time db "Your total time will be %lf hours", 10
 
+    initial_speed dq 0.0
+    miles dq 0.0
+    final_speed dq 0.0
+
     distance dq 253.5
 
 section .text
@@ -80,39 +84,42 @@ calculate:
 
     ; prompt for initial speed
     takeInput text_initial_speed, 0
+    movsd qword [initial_speed], xmm0
     
     ; prompt for miles
     takeInput text_miles, 1
+    movsd qword [miles], xmm1
 
     ; prompt for final speed
     takeInput text_final_speed, 2
+    movsd qword [final_speed], xmm2
 
     ; load distance
     movsd xmm3, qword [distance]
 
     ; xmm0 = initial speed
-    ; xmm1 = miles
+    ; xmm1 = initial distance
     ; xmm2 = final speed
-    ; xmm3 = distance
+    ; xmm3 = total distance
 
     ; xmm4 = total time
-    ; xmm5 = ( (distance - miles) / final speed )
+    ; xmm5 = ( (distance - initial distance) / final speed )
     ; xmm6 = average speed
 
-    ; ( miles / initial speed )
-    movsd xmm4, xmm1
-    divsd xmm4, xmm0
+    ; ( initial distance / initial speed )
+    movsd xmm4, [miles]
+    divsd xmm4, [initial_speed]
 
-    ; ( (distance - miles) / final speed )
-    movsd xmm5, xmm3
-    subsd xmm5, xmm1
-    divsd xmm5, xmm2
+    ; ( (total distance - initial distance) / final speed )
+    movsd xmm5, [distance]
+    subsd xmm5, [miles]
+    divsd xmm5, [final_speed]
 
-    ; total time = ( miles / initial speed ) + ( (distance - miles) / final speed )
+    ; total time = ( initial distance / initial speed ) + ( (total distance - initial distance) / final speed )
     addsd xmm4, xmm5
 
-    ; average speed = distance / total time
-    movsd xmm6, xmm3
+    ; average speed = total distance / total time
+    movsd xmm6, [distance]
     divsd xmm6, xmm4
 
     ; print average speed
