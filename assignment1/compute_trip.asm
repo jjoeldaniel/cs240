@@ -8,15 +8,12 @@ section .data
 
     string_format db "%s", 0
     float_format db "%lf", 0
+    newline db "", 10
 
-    text_average_speed db "Your average speed will be ", 0
-    text_total_time db "Your total time will be ", 0
+    text_average_speed db "Your average speed will be %lf", 10
+    text_total_time db "Your total time will be %lf", 10
 
     distance dq 253.5
-
-section .bss
-    average_speed resq 1
-    total_time resq 1
 
 section .text
     global calculate
@@ -58,6 +55,14 @@ section .text
     push r14
     push r15
     pushf
+%endmacro
+
+%macro newline 0
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, newline
+    mov rdx, 1
+    syscall
 %endmacro
 
 %macro restore 0
@@ -117,10 +122,19 @@ calculate:
     movsd xmm6, xmm3
     divsd xmm6, xmm4
 
-    ; xmm4 = total time
-    ; xmm6 = average speed
-    
-    
-    
+    newline
+
+    ; print average speed
+    movsd xmm0, xmm6
+    mov rax, 1
+    mov rdi, text_average_speed
+    call printf
+
+    ; print total time
+    movsd xmm0, xmm4
+    mov rax, 1
+    mov rdi, text_total_time
+    call printf
+
     restore
     ret
