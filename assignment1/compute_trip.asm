@@ -94,18 +94,21 @@ calculate:
     ; xmm1 = miles
     ; xmm2 = final speed
     ; xmm3 = distance
+
     ; xmm4 = total time
+    ; xmm5 = ( (distance - miles) / final speed )
     ; xmm6 = average speed
 
-    ; total time = ( miles / initial speed ) + ( (distance - miles) / final speed )
-
+    ; ( miles / initial speed )
     movsd xmm4, xmm1
     divsd xmm4, xmm0
 
+    ; ( (distance - miles) / final speed )
     movsd xmm5, xmm3
     subsd xmm5, xmm1
     divsd xmm5, xmm2
 
+    ; total time = ( miles / initial speed ) + ( (distance - miles) / final speed )
     addsd xmm4, xmm5
 
     ; average speed = distance / total time
