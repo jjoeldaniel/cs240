@@ -25,12 +25,11 @@ section .text
     syscall
 %endmacro
 
-; Function to read integer input
 %macro scanf 1
-    mov rax, 0           ; syscall number for sys_read
-    mov rdi, 0           ; file descriptor 0 (stdin)
-    mov rsi, 1          ; buffer address
-    mov rdx, %1          ; number of bytes to read
+    mov rax, 0
+    mov rdi, 0
+    mov rsi, 1
+    mov rdx, %1
     syscall
 %endmacro
 
@@ -43,14 +42,10 @@ section .text
 %endmacro
 
 %macro newline 0
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, newline
-    mov rdx, 1
-    syscall
+    printf newline, 1
 %endmacro
 
-_start:
+calculate:
 
     ; prompt for initial speed
     printf initial_speed, 66
