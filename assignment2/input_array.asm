@@ -1,5 +1,5 @@
 ; Name: Joel Daniel Rico
-; CWID: x
+; CWID: 885687517
 ; Program: Prompts input and stores in array
 
 global input_array

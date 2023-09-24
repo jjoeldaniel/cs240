@@ -3,3 +3,4 @@
 # Removes all previous object files and output files
 rm -f *.o
 rm -f *.lis
+find . -type f  ! -name "*.*"  -delete

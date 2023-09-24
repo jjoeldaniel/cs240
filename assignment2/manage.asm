@@ -1,13 +1,13 @@
 ; Name: Joel Daniel Rico
-; CWID: x
+; CWID: 885687517
 ; Program: Prompts input and stores in array
 
 extern scanf, printf
 extern input_array
 
 section .data
-    prompt1 db "Welcome to Array Management System", 10
-    prompt2 db "This product is maintained by Your Name at joeldanielrico@csu.fullerton.edu", 10
+    prompt1 db "We will take care of all your array needs.", 10, 0
+    prompt2 db "Please input float numbers separated by ws.  After the last number press ws followed by control-d.", 10, 0
 
     string_format db "%s", 0
     float_format db "%lf", 0
@@ -17,16 +17,16 @@ section .data
 section .bss
     array: resq maximum_array_size
 
-%macro prompt 0
+%macro print 2
     mov rax, 0
-    mov rdi, string_format
-    mov rsi, prompt1
+    mov rdi, %1
+    mov rsi, %2
     call printf
+%endmacro
 
-    mov rax, 0
-    mov rdi, string_format
-    mov rsi, prompt2
-    call printf
+%macro prompt 0
+    print string_format, prompt1
+    print string_format, prompt2
 %endmacro
 
 %macro backup 0

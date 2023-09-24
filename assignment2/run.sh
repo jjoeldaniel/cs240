@@ -1,29 +1,29 @@
 #!/usr/bin/env bash
 
-# Joel Daniel Rico
-# CPSC 240
-# Section 01
-# Program Name: CPSC 240 Assignment 2 - Arrays
-
 # Removes all previous object files and output files
 ./clean.sh
 
+# List of assembly files outputs
+FILES=()
+
 # Assemble *.asm files
 for file in *; do
-	if [[ $file == manage.asm ]]
+	if [[ $file == *.asm ]]
 	then
-		file="$(basename "$file" .asm)"
-		nasm -f elf64 -l "${file}".lis -o "${file}".o "${file}".asm 
+		./assemble.sh "${file}"
+		file="$(basename "${file}" .asm).o"
+		FILES+=("${file}")
 	fi
 done
 
 # Compile main.c
 C_FILE="main"
 echo "Compile $C_FILE"
-gcc -o $C_FILE.o $C_FILE.c -std=c17
+gcc -c -o $C_FILE.o $C_FILE.c
+FILES+=("${C_FILE}.o")
 
-# Links the two object files
-echo "Linking the object files"
-g++ -m64 manage.o main.o -o main -fno-pie -no-pie -std=c++17
+# Link object files
+echo "Linking object files"
+gcc -no-pie "${FILES[@]}" -o my_program > /dev/null 2>&1
 
-./main
+./my_program
