@@ -8,7 +8,7 @@ extern double manage();
 
 int main() {
 	printf("\n\nWelcome to Array Management System\n");
-	printf("This product is maintained by Your Name at joeldanielrico@csu.fullerton.edu\n\n");
+	printf("This product is maintained by Joel Daniel Rico at joeldanielrico@csu.fullerton.edu\n\n");
 
 	double result = manage();
 
