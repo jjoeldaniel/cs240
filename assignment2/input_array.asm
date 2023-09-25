@@ -9,40 +9,40 @@ segment .data
     float_format db "%lf", 0
 
 %macro backup 0
-    push rbp                                          ;Backup rbp
-    mov  rbp,rsp                                      ;The base pointer now points to top of stack
-    push rdi                                          ;Backup rdi
-    push rsi                                          ;Backup rsi
-    push rdx                                          ;Backup rdx
-    push rcx                                          ;Backup rcx
-    push r8                                           ;Backup r8
-    push r9                                           ;Backup r9
-    push r10                                          ;Backup r10
-    push r11                                          ;Backup r11
-    push r12                                          ;Backup r12
-    push r13                                          ;Backup r13
-    push r14                                          ;Backup r14
-    push r15                                          ;Backup r15
-    push rbx                                          ;Backup rbx
+    push rbp
+    mov  rbp,rsp
+    push rdi
+    push rsi
+    push rdx
+    push rcx
+    push r8
+    push r9
+    push r10
+    push r11
+    push r12
+    push r13
+    push r14
+    push r15
+    push rbx
     pushf
 %endmacro
 
 %macro restore 0
-    popf                                    ;Restore rflags
-    pop rbx                                 ;Restore rbx
-    pop r15                                 ;Restore r15
-    pop r14                                 ;Restore r14
-    pop r13                                 ;Restore r13
-    pop r12                                 ;Restore r12
-    pop r11                                 ;Restore r11
-    pop r10                                 ;Restore r10
-    pop r9                                  ;Restore r9
-    pop r8                                  ;Restore r8
-    pop rcx                                 ;Restore rcx
-    pop rdx                                 ;Restore rdx
-    pop rsi                                 ;Restore rsi
-    pop rdi                                 ;Restore rdi
-    pop rbp                                 ;Restore rbp
+    popf
+    pop rbx
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop r11
+    pop r10
+    pop r9
+    pop r8
+    pop rcx
+    pop rdx
+    pop rsi
+    pop rdi
+    pop rbp
 %endmacro
 
 %macro input 0
@@ -77,16 +77,18 @@ loop:
 
     ; Ctrl+D check
     cmp rax, -1
-    pop r12 ; Pop the value into r12
+    pop r12
     je done
 
     ; Insert into array
-    mov [r14 + r13 * 8], r12 
-    inc r13 ; Counter increments
-    jmp loop ; Loop repeats
+    mov [r14 + r13 * 8], r12
+
+    ; Iterate
+    inc r13
+    jmp loop
 done:
 
-    ; Return final array size
+    ; Return input array size
     pop rax
     mov rax, r13
 
