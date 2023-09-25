@@ -5,9 +5,7 @@
 extern printf
 
 section .data
-    string_format db "%s", 0
-    float_format db "%lf", 0
-    msg db "yo", 10, 0
+    float_format db "%f", 10, 0
 
 section .bss
 
@@ -74,15 +72,13 @@ output_array:
         cmp r13, r15
         je done
 
-        ; NOTE: Test msg for sanity checking
-        print string_format, msg
-
         ; Get current element
+        push qword 0
+        mov rax, 1
         movsd xmm0, [r14 + r13 * 8]
-
-        ; mov rdi, float_format
-        ; movsd [rsi], xmm0
-        ; call printf
+        mov rdi, float_format
+        call printf
+        pop rax
 
         inc r13 ; Counter increments
         jmp loop ; Loop repeats
