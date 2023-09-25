@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
 
+# Name: Joel Daniel Rico
+# CWID: 885687517
+# Program: Prompts input and stores in array
+
 # Removes all previous object files and output files
-./clean.sh
+rm -f ./*.o
+rm -f ./*.lis
+find . -type f  ! -name "*.*"  -delete
 
 # List of assembly files outputs
 FILES=()
@@ -10,9 +16,16 @@ FILES=()
 for file in *; do
 	if [[ $file == *.asm ]]
 	then
-		./assemble.sh "${file}"
-		file="$(basename "${file}" .asm).o"
-		FILES+=("${file}")
+
+		# Remove file extension
+		file="$(basename "${file}" .asm)"
+
+		# Assemble
+		echo "Assemble ${file}"
+		nasm -f elf64 -o "${file}".o "${file}".asm 
+
+		# Append
+		FILES+=("${file}.o")
 	fi
 done
 

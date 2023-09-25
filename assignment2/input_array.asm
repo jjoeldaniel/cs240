@@ -3,10 +3,12 @@
 ; Program: Prompts input and stores in array
 
 global input_array
-extern scanf
+extern scanf, printf
 
 segment .data
-fstring db "%lf", 0
+    string_format db "%s", 0
+    float_format db "%lf", 0
+    test_message db "test", 10, 0
 
 %macro backup 0
     push rbp
@@ -45,33 +47,50 @@ fstring db "%lf", 0
     pop rbp
 %endmacro
 
+%macro input 0
+    mov rax, 0
+    mov rdi, float_format
+    push qword 0
+    mov rsi, rsp
+    call scanf 
+%endmacro
+
 segment .text
 input_array:
     backup
-    pushf
     push qword 0
-    ; Inputting the information from the parameters into the registers
-    mov r14, rdi
-    mov r15, rsi
-    xor r13, r13
-loop:
-    ; Ensuring that the capacity isn't surpassed by the counter variable
-    cmp r13, r15
 
+    ; Parameters
+    mov r14, rdi  ; Array Pointer
+    mov r15, rsi  ; Maximnum Array Size
+    xor r13, r13  ; Loop Counter
+
+loop:
+
+    ; Check capacity
+    cmp r13, r15
     je done
-    mov rax, 0
-    mov rdi, fstring ; Specify's that a float will be inputted
-    push qword 0
-    mov rsi, rsp
-    call scanf ; Call for the input value
-    cdqe ; sign-extends DWORD (32-bit value) in the EAX register to a QWORD (64-bit value) in the RAX register
+
+    ; User input
+    input
+
+    ; ???
+    cdqe
+
+    ; Ctrl+D check
     cmp rax, -1
     pop r12 ; Pop the value into r12
     je done
-    mov [r14 + r13 * 8], r12 ; Place the value at the valid memory address
+
+    ; Insert into array
+    mov [r14 + r13 * 8], r12 
     inc r13 ; Counter increments
     jmp loop ; Loop repeats
 done:
-    restore
 
-    ret                                     ;Pop the integer stack and jump to the address equal to the popped value.
+    ; Return final array size
+    pop rax
+    mov rax, r13
+
+    restore
+    ret
