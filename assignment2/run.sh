@@ -4,6 +4,13 @@
 # CWID: 885687517
 # Program: Prompts input and stores in array
 
+echo "Tested on: NASM version 2.16.01"
+if command -v nasm &> /dev/null
+then
+	echo "Your NASM version: $(nasm -v)"
+	echo ""
+fi
+
 # Removes all previous object files and output files
 rm -f ./*.o
 find . -type f  ! -name "*.*"  -delete
@@ -20,7 +27,6 @@ for file in *; do
 		file="$(basename "${file}" .asm)"
 
 		# Assemble
-		echo "Assemble ${file}"
 		nasm -f elf64 -o "${file}".o "${file}".asm 
 
 		# Append
@@ -30,12 +36,10 @@ done
 
 # Compile main.c
 C_FILE="main"
-echo "Compile $C_FILE"
 gcc -c -o $C_FILE.o $C_FILE.c
 FILES+=("${C_FILE}.o")
 
 # Link object files
-echo "Linking object files"
 gcc -no-pie "${FILES[@]}" -o my_program > /dev/null 2>&1
 
 # Removes all previous object files
