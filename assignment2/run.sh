@@ -6,7 +6,6 @@
 
 # Removes all previous object files and output files
 rm -f ./*.o
-rm -f ./*.lis
 find . -type f  ! -name "*.*"  -delete
 
 # List of assembly files outputs
@@ -38,5 +37,8 @@ FILES+=("${C_FILE}.o")
 # Link object files
 echo "Linking object files"
 gcc -no-pie "${FILES[@]}" -o my_program > /dev/null 2>&1
+
+# Removes all previous object files
+rm -f ./*.o
 
 ./my_program
