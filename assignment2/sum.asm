@@ -7,40 +7,40 @@ section .bss
 
 %macro backup 0
     push rbp
-    mov rbp, rsp
-    push rbx
-    push rcx
-    push rdx
-    push rsi
-    push rdi
-    push r8
-    push r9
-    push r10
-    push r11
-    push r12
-    push r13
-    push r14
-    push r15
-    pushf
+    mov  rbp,rsp
+    push rdi                                                    ;Backup rdi
+    push rsi                                                    ;Backup rsi
+    push rdx                                                    ;Backup rdx
+    push rcx                                                    ;Backup rcx
+    push r8                                                     ;Backup r8
+    push r9                                                     ;Backup r9
+    push r10                                                    ;Backup r10
+    push r11                                                    ;Backup r11
+    push r12                                                    ;Backup r12
+    push r13                                                    ;Backup r13
+    push r14                                                    ;Backup r14
+    push r15                                                    ;Backup r15
+    push rbx                                                    ;Backup rbx
+    pushf 
     push qword 0
 %endmacro
 
 %macro restore 0
-    popf
-    pop r15
-    pop r14
-    pop r13
-    pop r12
-    pop r11
-    pop r10
-    pop r9
-    pop r8
-    pop rdi 
-    pop rsi
-    pop rdx
-    pop rcx
-    pop rbx
-    pop rbp
+    popf                                                        ;Restore rflags
+    pop rbx                                                     ;Restore rbx
+    pop r15                                                     ;Restore r15
+    pop r14                                                     ;Restore r14
+    pop r13                                                     ;Restore r13
+    pop r12                                                     ;Restore r12
+    pop r11                                                     ;Restore r11
+    pop r10                                                     ;Restore r10
+    pop r9                                                      ;Restore r9
+    pop r8                                                      ;Restore r8
+    pop rcx                                                     ;Restore rcx
+    pop rdx                                                     ;Restore rdx
+    pop rsi                                                     ;Restore rsi
+    pop rdi                                                     ;Restore rdi
+    pop rbp                                                     ;Restore rbp
 %endmacro
 
 section .text
@@ -56,16 +56,16 @@ sum:
 
     mov rax, 1
     mov rdx, 0
-    cvtsi2sd xmm15, rdx ; xmm15 will hold our running sum
+    cvtsi2sd xmm15, rdx ; total sum
 
     loop:
 
         ; Check capacity
         cmp r13, r15
-        je done
+        jge done
 
         ; Add current element
-        addsd xmm15, [r14 + r13 * 8]
+        addsd xmm15, [r14 + 8*r13]
 
         inc r13 ; Counter increments
         jmp loop ; Loop repeats
