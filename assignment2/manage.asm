@@ -6,13 +6,15 @@ extern scanf, printf
 extern input_array
 extern output_array
 extern sum
+extern exit
 
 section .data
     message1 db "We will take care of all your array needs.", 10, 0
     message2 db "Please input float numbers separated by ws. After the last number press ws followed by control-d.", 10, 0
     message3 db 10, "Thank you. The numbers in the array are:", 10, 0
-    message4 db "The sum of numbers in the array is %lf", 10, 0
+    message4 db "The sum of numbers in the array is %8.10lf", 10, 0
     message5 db "Thank you for using Array Management System.", 10, 0
+    msg db "yo", 10, 0
 
     string_format db "%s", 0
     int_format db "%d", 0
@@ -105,9 +107,12 @@ manage:
     movsd xmm15, xmm0
     pop rax
 
+    ; Sanity check
+    print msg
+
     ; Print Sum
     push qword 0
-    mov rax, 0
+    mov rax, 1
     movsd xmm0, xmm15
     mov rdi, message4
     call printf
@@ -119,6 +124,9 @@ manage:
     ; Return
     movsd xmm0, xmm15
     pop rax
+
+    ; Sanity check
+    print msg
 
     restore
     ret

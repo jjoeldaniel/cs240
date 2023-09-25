@@ -2,12 +2,7 @@
 ; CWID: 885687517
 ; Program: Prompts input and stores in array
 
-extern printf
-
 section .data
-    float_format db "%f", 10, 0
-    msg db "yo", 10, 0
-
 section .bss
 
 %macro backup 0
@@ -27,6 +22,7 @@ section .bss
     push r14
     push r15
     pushf
+    push qword 0
 %endmacro
 
 %macro restore 0
@@ -57,6 +53,10 @@ sum:
     mov r14, rdi  ; Array Pointer
     mov r15, rsi  ; Array Size
     xor r13, r13  ; Loop Counter
+
+    mov rax, 1
+    mov rdx, 0
+    cvtsi2sd xmm15, rdx ; xmm15 will hold our running sum
 
     loop:
 
