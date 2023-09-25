@@ -7,25 +7,16 @@ extern printf
 section .data
     float_format db "%f", 10, 0
 
-section .bss
-
-%macro print 2
-    push qword 0
-    mov rax, 0
-    mov rdi, %1
-    mov rsi, %2
-    call printf
-    pop rax
-%endmacro
+section .text
+    global output_array
 
 %macro backup 0
     push rbp
-    mov rbp, rsp
-    push rbx
-    push rcx
-    push rdx
-    push rsi
+    mov rbp,rsp
     push rdi
+    push rsi
+    push rdx
+    push rcx
     push r8
     push r9
     push r10
@@ -34,11 +25,14 @@ section .bss
     push r13
     push r14
     push r15
+    push rbx
     pushf
+    push qword 0
 %endmacro
 
 %macro restore 0
     popf
+    pop rbx
     pop r15
     pop r14
     pop r13
@@ -47,42 +41,44 @@ section .bss
     pop r10
     pop r9
     pop r8
-    pop rdi 
-    pop rsi
-    pop rdx
     pop rcx
-    pop rbx
+    pop rdx
+    pop rsi
+    pop rdi
     pop rbp
 %endmacro
 
-section .text
-    global output_array
-
 output_array:
+
     backup
 
-    ; Parameters
-    mov r14, rdi  ; Array Pointer
-    mov r15, rsi  ; Array Size
-    xor r13, r13  ; Loop Counter
+    ; Params
+    mov r15, rsi ; Array max size
+    mov r14, rdi ; Array Pointer
+    xor r13, r13 ; Counter
 
-    loop:
+loop3:
 
-        ; Check capacity
-        cmp r13, r15
-        je done
+    ; Check break condition
+    cmp r13, r15
+    je done
 
-        ; Get current element
-        push qword 0
-        mov rax, 1
-        movsd xmm0, [r14 + r13 * 8]
-        mov rdi, float_format
-        call printf
-        pop rax
+    ; Print current index
+    push qword 0
+    mov rax, 1
+    movq xmm0, [r14 + r13 * 8]
+    mov rdi, float_format
+    call printf
+    pop rax
 
-        inc r13 ; Counter increments
-        jmp loop ; Loop repeats
+    ; Increment the loop and restart
+    inc r13
+    jmp loop3
 
-    done:
-        restore
-        ret
+done:
+    mov rax, 0
+    pop rax
+
+    restore
+    ret
+
