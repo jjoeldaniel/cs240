@@ -2,7 +2,11 @@
 
 # Name: Joel Daniel Rico
 # CWID: 885687517
-# Program: Prompts input and stores in array
+# Program:
+#
+# This program takes input of a float array, displays
+# the inputed values, sorts in ascending order, and returns 
+# the newly sorted array.
 
 echo "Tested on: NASM version 2.16.01"
 if command -v nasm &> /dev/null
