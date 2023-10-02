@@ -18,7 +18,6 @@ find . -type f  ! -name "*.*"  -delete
 # List of assembly files outputs
 FILES=()
 
-# Assemble *.asm files
 for file in *; do
 	if [[ $file == *.asm ]]
 	then
@@ -31,13 +30,33 @@ for file in *; do
 
 		# Append
 		FILES+=("${file}.o")
+
+	elif [[ $file == *.c ]]
+	then
+
+		# Remove file extension
+		file="$(basename "${file}" .c)"
+
+		# Compile
+		gcc -c -o "${file}".o "${file}".c
+
+		# Append
+		FILES+=("${file}.o")
+	
+	elif [[ $file == *.cpp ]]
+	then
+
+		# Remove file extension
+		file="$(basename "${file}" .c)"
+
+		# Compile
+		gcc -o "${file}".o "${file}".c
+
+		# Append
+		FILES+=("${file}.o")
+
 	fi
 done
-
-# Compile main.c
-C_FILE="main"
-gcc -c -o $C_FILE.o $C_FILE.c
-FILES+=("${C_FILE}.o")
 
 # Link object files
 gcc -no-pie "${FILES[@]}" -o my_program -z noexecstack
