@@ -8,6 +8,7 @@
 
 extern scanf, printf
 extern input_array
+extern output_array
 
 section .data
     message1 db "This program will sort all of your doubles.", 10, 0
@@ -18,56 +19,54 @@ section .data
 
     float_format db "%lf", 0
 
-    maximum_array_size equ 8
+    maximum_array_size equ 10
 
 section .bss
-    align 16
+    align 64
+    backup_r resb 832
     array resq maximum_array_size
 
 %macro print 1
-    push qword 0
     mov rax, 0
     mov rdi, %1
     call printf
-    pop rax
 %endmacro
 
 %macro backup 0
-    push rbp
-    mov  rbp,rsp
-    push rdi
-    push rsi
-    push rdx
-    push rcx
-    push r8
-    push r9
-    push r10
-    push r11
-    push r12
-    push r13
-    push r14
-    push r15
-    push rbx
+    push    rbp
+    mov     rbp, rsp
+    push    rbx
+    push    rcx
+    push    rdx
+    push    rsi
+    push    rdi
+    push    r8
+    push    r9
+    push    r10
+    push    r11
+    push    r12
+    push    r13
+    push    r14
+    push    r15
     pushf
-    push qword 0
 %endmacro
 
 %macro restore 0
     popf
-    pop rbx
-    pop r15
-    pop r14
-    pop r13
-    pop r12
-    pop r11
-    pop r10
-    pop r9
-    pop r8
-    pop rcx
-    pop rdx
-    pop rsi
-    pop rdi
-    pop rbp
+    pop     r15
+    pop     r14
+    pop     r13
+    pop     r12
+    pop     r11
+    pop     r10
+    pop     r9
+    pop     r8
+    pop     rdi
+    pop     rsi
+    pop     rdx
+    pop     rcx
+    pop     rbx
+    pop     rbp
 %endmacro
 
 section .text
@@ -76,37 +75,46 @@ section .text
 manage:
     backup
 
+    ; Component Restore
+    mov     rax, 7
+    mov     rdx, 0
+    xsave   [backup_r]
+
     ; Initial prompt
     print message1
     print message2
 
     ; Call input_array
-    push qword 0
-    mov rax, 0
-    mov rdi, array
-    mov rsi, maximum_array_size
-    call input_array
-    mov r13, rax
-    pop rax
+    mov   rax, 0
+    mov   rdi, array
+    mov   rsi, maximum_array_size
+    call  input_array
+    mov   r13, rax
 
     ; NOTE: r13 = Size of array
 
     print message3
 
     ; Call output_array
-    ; push qword 0
-    ; mov rax, 0
-    ; mov rdi, array
-    ; mov rsi, r13
-    ; call output_array
-    ; pop rax
+    mov   rax, 0
+    mov   rdi, array
+    mov   rsi, r13
+    call  output_array
 
     ; Print final message
     print message5
 
+    ; Component Restore
+    mov     rax, 7
+    mov     rdx, 0
+    xsave   [backup_r]
+
     ; Return
-    movsd xmm0, xmm15
-    pop rax
+    mov rax, r13
 
     restore
+
+    mov qword[rdi], rax
+    mov rax, array
+
     ret
