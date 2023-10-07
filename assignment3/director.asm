@@ -7,17 +7,16 @@
 ; the newly sorted array.
 
 extern scanf, printf
-extern input_array
-extern output_array
+extern input_array, output_array
 
 section .data
     message1 db "This program will sort all of your doubles.", 10, 0
     message2 db 10, "Please enter floating point numbers separated by white space.  After the last numeric input enter at least one more white space and press cntl+d.", 10, 0
     message3 db 10, "Thank you.  You entered these numbers:", 10, 0
-    message4 db 10, "End of output array.", 0
-    message5 db 10, "The array is now being sorted without moving any numbers.", 10, 0
+    message4 db "End of output array.", 0
+    message5 db 10, 10, "The array is now being sorted without moving any numbers.", 10, 0
     message6 db 10, "The data in the array is now ordered as follows:", 10, 0
-    message7 db 10, "The array will be sent back to the caller function.", 10, 0
+    message7 db 10, 10, "The array will be sent back to the caller function.", 10, 0
 
     float_format db "%lf", 0
 
@@ -72,9 +71,9 @@ section .bss
 %endmacro
 
 section .text
-    global manage
+    global director
 
-manage:
+director:
     backup
 
     ; Component Restore
@@ -106,7 +105,6 @@ manage:
     print message4
     print message5
 
-    print message4
     print message6
 
     ; TODO: Sort
@@ -116,6 +114,7 @@ manage:
     mov   rdi, array
     mov   rsi, r13
     call  output_array
+    print message4
 
     ; Print final message
     print message7
