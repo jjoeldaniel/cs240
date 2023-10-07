@@ -51,10 +51,10 @@ for file in *; do
 	then
 
 		# Remove file extension
-		file="$(basename "${file}" .c)"
+		file="$(basename "${file}" .cpp)"
 
 		# Compile
-		gcc -o "${file}".o "${file}".c
+		g++ -o "${file}".o "${file}".cpp
 
 		# Append
 		FILES+=("${file}.o")
@@ -62,10 +62,12 @@ for file in *; do
 	fi
 done
 
+OUTPUT_FILE="program"
+
 # Link object files
-gcc -no-pie "${FILES[@]}" -o my_program -z noexecstack
+gcc -no-pie "${FILES[@]}" -o "${OUTPUT_FILE}" -z noexecstack
 
 # Removes all previous object files
 rm -f ./*.o
 
-./my_program
+./"${OUTPUT_FILE}"
