@@ -14,8 +14,10 @@ section .data
     message1 db "This program will sort all of your doubles.", 10, 0
     message2 db 10, "Please enter floating point numbers separated by white space.  After the last numeric input enter at least one more white space and press cntl+d.", 10, 0
     message3 db 10, "Thank you.  You entered these numbers:", 10, 0
-    message4 db "The sum of numbers in the array is %8.10lf", 10, 0
-    message5 db 10, "The array will be sent back to the caller function.", 10, 0
+    message4 db 10, "End of output array.", 0
+    message5 db 10, "The array is now being sorted without moving any numbers.", 10, 0
+    message6 db 10, "The data in the array is now ordered as follows:", 10, 0
+    message7 db 10, "The array will be sent back to the caller function.", 10, 0
 
     float_format db "%lf", 0
 
@@ -101,8 +103,22 @@ manage:
     mov   rsi, r13
     call  output_array
 
-    ; Print final message
+    print message4
     print message5
+
+    print message4
+    print message6
+
+    ; TODO: Sort
+
+    ; Print sorted array
+    mov   rax, 0
+    mov   rdi, array
+    mov   rsi, r13
+    call  output_array
+
+    ; Print final message
+    print message7
 
     ; Component Restore
     mov     rax, 7
