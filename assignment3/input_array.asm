@@ -1,7 +1,7 @@
 ; ****************************************************************************************************************************
 ; Program name: "Array Sorter". This program takes an array input, sorts it, and prints the result                           *
-; Copyright (C) 2018  Floyd Holliday                                                                                         *
-;                                                                                                                           *
+; Copyright (C) 2023  Joel Daniel Rico                                                                                       *
+;                                                                                                                            *
 ; This file is part of the software program "Array Sorter".                                                                  *                         
 ; "Array Sorter" is free software: you can redistribute it and/or modify it under the terms of the GNU General Public        *
 ; License version 3 as published by the Free Software Foundation.                                                            *
