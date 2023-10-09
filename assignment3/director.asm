@@ -137,7 +137,7 @@ director:
 
     print message6
 
-    ; TODO: Sort
+    ; Sort
     mov   rax, 0
     mov   rdi, array
     mov   rsi, r13
