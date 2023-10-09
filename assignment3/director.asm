@@ -8,6 +8,7 @@
 
 extern scanf, printf
 extern input_array, output_array
+extern sort_array
 
 section .data
     message1 db "This program will sort all of your doubles.", 10, 0
@@ -108,6 +109,10 @@ director:
     print message6
 
     ; TODO: Sort
+    mov   rax, 0
+    mov   rdi, array
+    mov   rsi, r13
+    call  sort_array
 
     ; Print sorted array
     mov   rax, 0

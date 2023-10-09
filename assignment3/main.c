@@ -11,13 +11,13 @@
 extern double **director(unsigned long *n);
 
 int main() {
-  printf("\nWelcome to a great program developed by Joel Daniel Rico\n");
+  printf("\nWelcome to a great program developed by Joel Daniel Rico.\n");
 
   unsigned long size = 0;
   double **arr = director(&size);
 
   printf("\nThe main function received this set of numbers:\n");
-  for (unsigned long i = 0; i < size; ++i) {
+  for (unsigned long i = 0; i < size; i++) {
     printf("%1.10lf\n", *(arr[i]));
   }
 
