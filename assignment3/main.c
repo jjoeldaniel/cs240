@@ -47,7 +47,7 @@ int main() {
 
   printf("\nThe main function received this set of numbers:\n");
   for (unsigned long i = 0; i < size; i++) {
-    printf("%1.10lf\n", *(arr[i]));
+    printf("%.5lf\n", *(arr[i]));
   }
 
   printf("Main will keep these and send a zero to the operating system.\n");
