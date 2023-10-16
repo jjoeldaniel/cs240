@@ -57,9 +57,9 @@ segment .bss
     push    r15
     pushf
 
-    mov         rax, 7
-    mov         rdx, 0
-    xsave       [backup_r]
+    mov     rax, 7
+    mov     rdx, 0
+    xsave   [backup_r]
 %endmacro
 
 %macro restore 0
