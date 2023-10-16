@@ -24,8 +24,8 @@
 #  Program name: Array Sorter
 #  Programming languages: One module in C++ one module in C, two modules in X86-64, and one module in Bash.
 #  Date program began: 2023-Oct-6
-#  Date of last update: 2023-Oct-8
-#  Files in this program: director.asm, input_array.asm, main.c, output_array.c, rx.sh, sort_pointers.c
+#  Date of last update: 2023-Oct-15
+#  Files in this program: director.asm, input_array.asm, main.c, output_array.c, rx.sh, sort_pointers.asm
 #  Status: This program was tested over a dozen times on Fedora 38 (Oct 2023) without errors.
 #  Purpose: The program takes an array input, sorts it, and prints the result
 #
