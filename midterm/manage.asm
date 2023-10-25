@@ -11,8 +11,6 @@ section .data
     message1 db "We will take care of all your array needs.", 10, 0
     message2 db "Please input float numbers separated by ws. After the last number press ws followed by control-d.", 10, 0
     message3 db 10, "Thank you. The numbers in the array are:", 10, 0
-    message4 db "The sum of numbers in the array is %8.10lf", 10, 0
-    message5 db 10, "Thank you for using Array Management System.", 10, 0
 
     float_format db "%lf", 0
 
@@ -107,17 +105,6 @@ manage:
     call sum
     movsd xmm15, xmm0
     pop rax
-
-    ; Print Sum
-    push qword 0
-    mov rax, 1
-    movsd xmm0, xmm15
-    mov rdi, message4
-    call printf
-    pop rax
-
-    ; Print final message
-    print message5
 
     ; Return
     movsd xmm0, xmm15

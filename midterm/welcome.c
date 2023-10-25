@@ -7,12 +7,11 @@
 extern double manage();
 
 int main() {
-	printf("\nWelcome to Array Management System\n");
-	printf("This product is maintained by Joel Daniel Rico at joeldanielrico@csu.fullerton.edu\n\n");
+	printf("\nWelcome to My Array by Joel Daniel Rico\n");
 
 	double result = manage();
 
-	printf("The main function received %f and will keep it for a while.\nPlease consider buying more software from our suite of commercial program.\nA zero will be returned to the operating system. Bye\n", result);
+	printf("The main function received %f and will study it for a while.\nZero will be returned to the operating system. Bye\n", result);
 
 	return 0;
 }
