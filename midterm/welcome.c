@@ -11,7 +11,7 @@ int main() {
 
 	double result = manage();
 
-	printf("The main function received %f and will study it for a while.\nZero will be returned to the operating system. Bye\n", result);
+	printf("The main function received %f and will study it for a while.\n\n0 will be returned to the operating system. Bye\n", result);
 
 	return 0;
 }

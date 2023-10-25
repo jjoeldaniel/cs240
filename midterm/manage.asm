@@ -8,9 +8,10 @@ extern output_array
 extern sum
 
 section .data
-    message1 db "We will take care of all your array needs.", 10, 0
-    message2 db "Please input float numbers separated by ws. After the last number press ws followed by control-d.", 10, 0
-    message3 db 10, "Thank you. The numbers in the array are:", 10, 0
+    message1 db "Please enter floating point numbers separated by ws. ", 0 
+    message2 db "After the last valid input enter one more ws followed by control+d", 10, 0
+    message4 db 10, "This is the array: ", 0
+    message5 db "Here is the array: ", 0
 
     float_format db "%lf", 0
 
@@ -87,7 +88,7 @@ manage:
 
     ; NOTE: r13 = Size of array
 
-    print message3
+    print message4
 
     ; Call output_array
     push qword 0
