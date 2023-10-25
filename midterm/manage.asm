@@ -21,7 +21,9 @@ section .data
     maximum_array_size equ 8
 
 section .bss
-    align 16
+    align 64
+    Save resb 832
+
     array resq maximum_array_size
 
 %macro print 1
@@ -76,41 +78,52 @@ section .bss
 %endmacro
 
 %macro backup 0
-    push rbp
-    mov  rbp,rsp
-    push rdi
-    push rsi
-    push rdx
-    push rcx
-    push r8
-    push r9
-    push r10
-    push r11
-    push r12
-    push r13
-    push r14
-    push r15
-    push rbx
-    pushf
-    push qword 0
+        ; backup registers
+        push rbp
+        mov rbp, rsp
+        push rbx
+        push rcx
+        push rdx
+        push rsi
+        push rdi
+        push r8
+        push r9
+        push r10
+        push r11
+        push r12
+        push r13
+        push r14
+        push r15
+        pushf
+        pushf
+
+        ; xsave
+        mov rax, 7
+        mov rdx, 0
+        xsave [Save]
 %endmacro
 
 %macro restore 0
-    popf
-    pop rbx
-    pop r15
-    pop r14
-    pop r13
-    pop r12
-    pop r11
-    pop r10
-    pop r9
-    pop r8
-    pop rcx
-    pop rdx
-    pop rsi
-    pop rdi
-    pop rbp
+        mov rax, 7
+        mov rdx, 0
+        xrstor [Save]
+
+        popf
+        popf
+        pop r15
+        pop r14
+        pop r13
+        pop r12
+        pop r11
+        pop r10
+        pop r9
+        pop r8
+        pop rdi
+        pop rsi
+        pop rdx
+        pop rcx
+        pop rbx
+        pop rbp
 %endmacro
 
 section .text
@@ -150,7 +163,6 @@ manage:
  
     ; Rotate two times and print array
     print rot2
-    rotate
     rotate
     print_here_array
 
