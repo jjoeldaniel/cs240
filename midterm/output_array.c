@@ -1,3 +1,9 @@
+// Name: Joel Daniel Rico
+// CWID: 885687517
+// Date: 10/25/23
+// Program Name: My Array
+// File Function: Outputs array 
+
 #include <stdio.h>
 
 extern void output_array(const double *, const unsigned long);

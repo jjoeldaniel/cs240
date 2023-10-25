@@ -1,6 +1,8 @@
 ; Name: Joel Daniel Rico
 ; CWID: 885687517
-; Program: Prompts input and stores in array
+; Date: 10/25/23
+; Program Name: My Array
+; File Function: Takes user input of array
 
 global input_array
 extern scanf, printf

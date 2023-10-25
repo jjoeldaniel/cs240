@@ -1,6 +1,9 @@
 // Name: Joel Daniel Rico
 // CWID: 885687517
 // Program: Prompts input and stores in array
+// Date: 10/25/23
+// Program Name: My Array
+// File Function: C driver for program
 
 #include <stdio.h>
 

@@ -1,3 +1,10 @@
+; Name: Joel Daniel Rico
+; CWID: 885687517
+; Program: Prompts input and stores in array
+; Date: 10/25/23
+; Program Name: My Array
+; File Function: Rotates array left once 
+
 global rot_left
 
 %macro backup 0
