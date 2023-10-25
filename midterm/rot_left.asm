@@ -26,6 +26,10 @@ global rot_left
 %endmacro
 
 %macro restore 0
+        mov rax, 7
+        mov rdx, 0
+        xrstor [Save]
+
         popf
         pop r15
         pop r14
@@ -75,10 +79,5 @@ segment .text
 
     end_loop:
         movsd [r14 + (r13 - 1) * 8], xmm0
-
-        mov rax, 7
-        mov rdx, 0
-        xrstor [Save]
-
         restore
         ret
