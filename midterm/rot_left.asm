@@ -1,7 +1,7 @@
 global rot_left
 
 %macro backup 0
-        ; Backup registers
+        ; backup registers
         push rbp
         mov rbp, rsp
         push rbx
@@ -19,7 +19,7 @@ global rot_left
         push r15
         pushf
 
-        ; Backup AVX, SSE, FPU registers
+        ; xsave
         mov rax, 7
         mov rdx, 0
         xsave [Save]
@@ -36,23 +36,23 @@ segment .text
         backup
 
         ; Function parameters
-        mov r14, rdi               ; r14 is the address of array a
-        mov r13, rsi               ; r13 is the array length
+        mov r14, rdi               ; array address
+        mov r13, rsi               ; array length
 
-        movsd xmm0, [r14]          ; xmm0 = a[0]
+        movsd xmm0, [r14]          ; first index
 
         ; Function body
-        mov r15, 1                 ; r15 is the loop counter, initialize to 1
+        mov r15, 1                 ; loop counter starting at 1
 
     begin_loop:
-        cmp r15, r13               ; compare counter with array length
-        je end_loop                ; if loop counter == array length, end loop
+        cmp r15, r13               ; check for counter == arr length
+        je end_loop                ; if ==, end loop
 
-        ; Shift each element to the left (each element overwrites the previous)
-        movsd xmm1, [r14 + r15 * 8]  ; xmm1 = a[i]
+        ; shift elements to right 
+        movsd xmm1, [r14 + r15 * 8]        ; xmm1 = a[i]
         movsd [r14 + (r15 - 1) * 8], xmm1  ; a[i-1] = a[i]
 
-        inc r15                     ; increment loop counter
+        inc r15                    ; increment loop counter
         jmp begin_loop
 
     end_loop:
