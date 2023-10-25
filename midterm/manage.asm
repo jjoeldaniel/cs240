@@ -18,7 +18,7 @@ section .data
 
     float_format db "%lf", 0
 
-    maximum_array_size equ 8
+    maximum_array_size equ 10
 
 section .bss
     align 16
