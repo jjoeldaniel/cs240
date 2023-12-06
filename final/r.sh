@@ -7,6 +7,8 @@
 # Program Name: My Array
 # File Function: Assembles/compiles/executes program
 
+echo "======================================================"
+
 echo "Tested on: NASM version 2.16.01"
 if command -v nasm &> /dev/null
 then
@@ -14,8 +16,12 @@ then
 	echo ""
 fi
 
+echo "System Shell: $SHELL"
+
 echo "Note: Please run using bash"
 echo "Reason: Some systems sh installation can point to a shell that lacks support for arrays, which this script depends on"
+
+echo "======================================================"
 
 # Removes all previous object files and output files
 rm -f ./*.o
