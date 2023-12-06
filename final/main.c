@@ -5,7 +5,7 @@
 
 #include <stdio.h>
 
-extern double manage();
+extern int manage();
 
 int main() {
 	printf("\nWelcome to Array Management System\n");
@@ -13,7 +13,7 @@ int main() {
 
 	int result = manage();
 
-	printf("\n\nThe main function received %0.1i and will keep it for a while\n\nA zero will be returned to the operating system.\n", result);
+	printf("\n\nThe main function received %0.1i and will keep it for a while.\nPlease consider buying more software from our suite of commercial program.\nA zero will be returned to the operating system.Bye\n", result);
 
 	return 0;
 }

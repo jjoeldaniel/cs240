@@ -5,14 +5,14 @@
 
 global manage
 extern printf
-extern stdin
-extern fill_random_array
+extern input_array
 extern show_array
 max_size equ 10
 
 segment .data
-    message1 db "We will take care of all your array needs.", 10, "Please input float numbers separated by ws.  After the last number press ws followed by control-d."
-    prompt_print_num_1 db "Your numbers have been stored in an array. Here is that array.", 10, 10, 0
+    message1 db 10, "We will take care of all your array needs.", 10, "Please input float numbers separated by ws.  After the last number press ws followed by control-d. "
+    message2 db "Here are the values in the array.", 10, 10, 0
+    message3 db 10, "The numbers of the array have been displayed.", 10, "Thank you for using Array Management System."
 
 segment .bss
     align 64
@@ -56,22 +56,23 @@ manage:
     ; Move the number of random numbers to generate (10) into r15
     mov      r15, max_size
 
-    ; Print the prompt
-    mov      rax, 0
-    mov      rdi, prompt_print_num_1 ; Your numbers have been stored in an array. Here is that array.
-    call     printf
+    print message1
 
     ; Generate 10 random numbers inside the array
     mov      rax, 0
     mov      rdi, random_number_array
     mov      rsi, 10 ; Number of random numbers to generate
-    call     fill_random_array
+    call     input_array
+
+    print message2
 
     ; Show the content of the array
     mov         rax, 0
     mov         rdi, random_number_array
     mov         rsi, r15
     call        show_array
+
+    print message3
 
     ; Restore all the floating-point numbers
     mov         rax, 7

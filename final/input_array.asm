@@ -3,16 +3,27 @@
 ; Email: joeldanielrico@csu.fullerton.edu
 ; Date: 12/06/23
 
-global fill_random_array
+global input_array
+extern printf
 extern rdrand
 
 segment .data
+    message1 db "The array has been filled with random numbers.", 10
+
+%macro print 1
+    push qword 0
+    mov rax, 0
+    mov rdi, %1
+    call printf
+    pop rax
+%endmacro
+
 segment .bss
     align 64
     storedata resb 832
 
 segment .text
-fill_random_array:
+input_array:
     ; Back up components
     push        rbp
     mov         rbp, rsp
@@ -39,6 +50,8 @@ fill_random_array:
     xor         r13, r13                        ; r13 keeps track of the index of the loop 
     mov         r14, rdi                        ; rdi contains the address of the random_number_array   
     mov         r15, rsi                        ; rsi contains the count of the random_number_array
+
+    print message1
 
 fill_loop:
     ; If the index reach the count, end the loop
