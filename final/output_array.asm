@@ -3,83 +3,91 @@
 ; Email: joeldanielrico@csu.fullerton.edu
 ; Date: 12/06/23
 
+global output_array
 extern printf
 
-section .data
-    float_format db "%f", 10, 0
-
-section .text
-    global output_array
+segment .data
+    output_format db "0x%016lx    %-18.13g", 10, 0
 
 %macro backup 0
-    push rbp
-    mov rbp,rsp
-    push rdi
-    push rsi
-    push rdx
-    push rcx
-    push r8
-    push r9
-    push r10
-    push r11
-    push r12
-    push r13
-    push r14
-    push r15
-    push rbx
+    push        rbp
+    mov         rbp, rsp
+    push        rbx
+    push        rcx
+    push        rdx
+    push        rsi
+    push        rdi
+    push        r8 
+    push        r9 
+    push        r10
+    push        r11
+    push        r12
+    push        r13
+    push        r14
+    push        r15
     pushf
-    push qword 0
 %endmacro
 
 %macro restore 0
-    popf
-    pop rbx
-    pop r15
-    pop r14
-    pop r13
-    pop r12
-    pop r11
-    pop r10
-    pop r9
-    pop r8
-    pop rcx
-    pop rdx
-    pop rsi
-    pop rdi
-    pop rbp
+    popf          
+    pop         r15
+    pop         r14
+    pop         r13
+    pop         r12
+    pop         r11
+    pop         r10
+    pop         r9 
+    pop         r8 
+    pop         rdi
+    pop         rsi
+    pop         rdx
+    pop         rcx
+    pop         rbx
+    pop         rbp
 %endmacro
 
-output_array:
+segment .bss
+    align 64
+    storedata resb 832
 
+segment .text
+
+output_array:
     backup
 
-    ; Params
-    mov r15, rsi ; Array max size
-    mov r14, rdi ; Array Pointer
-    xor r13, r13 ; Counter
+    ; Save all the floating-point numbers
+    mov         rax, 7
+    mov         rdx, 0
+    xsave       [storedata]
 
-loop3:
+    xor         r13, r13     ; r13 keeps track of the index of the loop    
+    mov         r14, rdi     ; rdi contains the array
+    mov         r15, rsi     ; rsi contains the count of the array
 
-    ; Check break condition
-    cmp r13, r15
-    je done
+output_loop:
+    ; If the index reach the count, end the loop
+    cmp         r13, r15
+    jge         output_finished
+    
+    ; Print the number inside the array in hex and scientific format
+    mov         rax, 1
+    mov         rdi, output_format  
+    mov         rsi, [r14 + r13  * 8]
+    movsd       xmm0, [r14 + r13 * 8]
+    call        printf   
 
-    ; Print current index
-    push qword 0
-    mov rax, 1
-    movq xmm0, [r14 + r13 * 8]
-    mov rdi, float_format
-    call printf
-    pop rax
+    ; Inrease the index and repeat the loop
+    inc         r13      
+    jmp         output_loop
 
-    ; Increment the loop and restart
-    inc r13
-    jmp loop3
+output_finished:
+    ; Restore all the floating-point numbers
+    mov         rax, 7
+    mov         rdx, 0
+    xrstor      [storedata]
 
-done:
-    mov rax, 0
-    pop rax
-
+    ;Restore the original values to the GPRs
     restore
-    ret
 
+    ; Clean up
+    ret

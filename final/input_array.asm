@@ -10,21 +10,7 @@ extern rdrand
 segment .data
     message1 db "The array has been filled with random numbers.", 10
 
-%macro print 1
-    push qword 0
-    mov rax, 0
-    mov rdi, %1
-    call printf
-    pop rax
-%endmacro
-
-segment .bss
-    align 64
-    storedata resb 832
-
-segment .text
-input_array:
-    ; Back up components
+%macro backup 0
     push        rbp
     mov         rbp, rsp
     push        rbx
@@ -41,6 +27,41 @@ input_array:
     push        r14
     push        r15
     pushf
+%endmacro
+
+%macro restore 0
+    popf          
+    pop         r15
+    pop         r14
+    pop         r13
+    pop         r12
+    pop         r11
+    pop         r10
+    pop         r9 
+    pop         r8 
+    pop         rdi
+    pop         rsi
+    pop         rdx
+    pop         rcx
+    pop         rbx
+    pop         rbp
+%endmacro
+
+%macro print 1
+    push qword 0
+    mov rax, 0
+    mov rdi, %1
+    call printf
+    pop rax
+%endmacro
+
+segment .bss
+    align 64
+    storedata resb 832
+
+segment .text
+input_array:
+    backup
 
     ; Save all the floating-point numbers
     mov         rax, 7
@@ -75,21 +96,7 @@ fill_finished:
     xrstor      [storedata]
 
     ;Restore the original values to the GPRs
-    popf          
-    pop         r15
-    pop         r14
-    pop         r13
-    pop         r12
-    pop         r11
-    pop         r10
-    pop         r9 
-    pop         r8 
-    pop         rdi
-    pop         rsi
-    pop         rdx
-    pop         rcx
-    pop         rbx
-    pop         rbp
+    restore
 
     ; Clean up
     ret
