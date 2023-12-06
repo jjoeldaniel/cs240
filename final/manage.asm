@@ -1,31 +1,24 @@
 ; Name: Joel Daniel Rico
 ; CWID: 885687517
-; Program: Prompts input and stores in array
-; Date: 10/25/23
-; Program Name: My Array
-; File Function: Manages execution of C/ASM files 
+; Email: joeldanielrico@csu.fullerton.edu
+; Date: 12/06/23
 
-extern scanf, printf
-extern input_array
-extern output_array
-extern sum
-extern rot_left
+global manage
+extern printf
+extern stdin
+extern fill_random_array
+extern show_array
+max_size equ 10
 
-section .data
-    message1 db "Please enter floating point numbers separated by ws. After the last valid input enter one more ws followed by control+d", 10, 10, 0
-    this_arr db 10, "This is the array: ", 0
-    here_arr db 10, "Here is the array: ", 0
-    rot1 db 10, 10, "Function rot-left was called 1 time.", 10, 0
-    rot2 db 10, 10, "Function rot-left was called 2 times consecutively.", 10, 0
-    rot3 db 10, 10, "Function rot-left was called 3 times consecutively.", 10, 0
+segment .data
+    message1 db "We will take care of all your array needs.", 10, "Please input float numbers separated by ws.  After the last number press ws followed by control-d."
+    prompt_print_num_1 db "Your numbers have been stored in an array. Here is that array.", 10, 10, 0
 
-    float_format db "%lf", 0
-
-    maximum_array_size equ 10
-
-section .bss
-    align 16
-    array resq maximum_array_size
+segment .bss
+    align 64
+    storedata resb 832
+    input_count resb max_size
+    random_number_array resq 10
 
 %macro print 1
     push qword 0
@@ -35,134 +28,74 @@ section .bss
     pop rax
 %endmacro
 
-%macro print_here_array 0
-    print here_arr
-    ; Call output_array
-    push qword 0
-    mov rax, 0
-    mov rdi, array
-    mov rsi, r13
-    call output_array
-    pop rax
-%endmacro
-
-%macro print_this_array 0
-    print this_arr
-    ; Call output_array
-    push qword 0
-    mov rax, 0
-    mov rdi, array
-    mov rsi, r13
-    call output_array
-    pop rax
-%endmacro
-
-%macro sum 0
-    ; Calculate Sum
-    push qword 0
-    mov rax, 0
-    mov rdi, array
-    mov rsi, r13
-    call sum
-    movsd xmm15, xmm0
-    pop rax
-%endmacro
-
-%macro rotate 0
-    ; Call rot_left
-    push qword 0
-    mov rax, 0
-    mov rdi, array
-    mov rsi, r13
-    call rot_left
-    pop rax
-%endmacro
-
-%macro backup 0
-    push rbp
-    mov  rbp,rsp
-    push rdi
-    push rsi
-    push rdx
-    push rcx
-    push r8
-    push r9
-    push r10
-    push r11
-    push r12
-    push r13
-    push r14
-    push r15
-    push rbx
-    pushf
-    push qword 0
-%endmacro
-
-%macro restore 0
-    popf
-    pop rbx
-    pop r15
-    pop r14
-    pop r13
-    pop r12
-    pop r11
-    pop r10
-    pop r9
-    pop r8
-    pop rcx
-    pop rdx
-    pop rsi
-    pop rdi
-    pop rbp
-%endmacro
-
-section .text
-    global manage
-
+segment .text
 manage:
-    backup
+    ; Back up components
+    push        rbp
+    mov         rbp, rsp
+    push        rbx
+    push        rcx
+    push        rdx
+    push        rsi
+    push        rdi
+    push        r8 
+    push        r9 
+    push        r10
+    push        r11
+    push        r12
+    push        r13
+    push        r14
+    push        r15
+    pushf
 
-    ; Initial prompt
-    print message1
+    ; Save all the floating-point numbers
+    mov         rax, 7
+    mov         rdx, 0
+    xsave       [storedata]
 
-    ; Call input_array
-    push qword 0
-    mov rax, 0
-    mov rdi, array
-    mov rsi, maximum_array_size
-    call input_array
-    mov r13, rax
-    pop rax
+    ; Move the number of random numbers to generate (10) into r15
+    mov      r15, max_size
 
-    ; NOTE: r13 = Size of array
+    ; Print the prompt
+    mov      rax, 0
+    mov      rdi, prompt_print_num_1 ; Your numbers have been stored in an array. Here is that array.
+    call     printf
 
-    ; Print inputted array
-    print_this_array
+    ; Generate 10 random numbers inside the array
+    mov      rax, 0
+    mov      rdi, random_number_array
+    mov      rsi, 10 ; Number of random numbers to generate
+    call     fill_random_array
+
+    ; Show the content of the array
+    mov         rax, 0
+    mov         rdi, random_number_array
+    mov         rsi, r15
+    call        show_array
+
+    ; Restore all the floating-point numbers
+    mov         rax, 7
+    mov         rdx, 0
+    xrstor      [storedata]
+
+    mov         rax, max_size 
     
-    ; Rotate once and print array
-    rotate
-    print rot1
-    print_here_array
+    ;Restore the original values to the GPRs
+    popf          
+    pop         r15
+    pop         r14
+    pop         r13
+    pop         r12
+    pop         r11
+    pop         r10
+    pop         r9 
+    pop         r8 
+    pop         rdi
+    pop         rsi
+    pop         rdx
+    pop         rcx
+    pop         rbx
+    pop         rbp
 
-    ; Rotate three times and print array
-    print rot3
-    rotate
-    rotate
-    rotate
-    print_here_array
- 
-    ; Rotate two times and print array
-    print rot2
-    rotate
-    rotate
-    print_here_array
-
-    ; Calculate sum
-    sum
-
-    ; Return
-    movsd xmm0, xmm15
-    pop rax
-
-    restore
+    ; Clean up
     ret

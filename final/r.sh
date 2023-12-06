@@ -2,10 +2,8 @@
 
 # Name: Joel Daniel Rico
 # CWID: 885687517
-# Program: Prompts input and stores in array
-# Date: 10/25/23
-# Program Name: My Array
-# File Function: Assembles/compiles/executes program
+# Email: joeldanielrico@csu.fullerton.edu
+# Date: 12/06/23
 
 echo "======================================================"
 
@@ -20,6 +18,13 @@ echo "System Shell: $SHELL"
 
 echo "Note: Please run using bash"
 echo "Reason: Some systems sh installation can point to a shell that lacks support for arrays, which this script depends on"
+
+echo ""
+echo "Examples on how to run:
+
+bash ./r.sh
+./r.sh
+"
 
 echo "======================================================"
 
